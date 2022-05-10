@@ -2,8 +2,6 @@ package errors
 
 import (
 	goerrs "errors"
-	"fmt"
-	"reflect"
 )
 
 type APIError struct {
@@ -31,16 +29,12 @@ func ErrorType(errType string) (ErrorBuilder, ErrorTypeCheck) {
 				UnderlyingError: underlyingError,
 			}
 		}, func(err error) bool {
-			fmt.Println(":: checking ", err.Error(), reflect.TypeOf(err))
-
 			var errPtr *APIError = &APIError{}
 			if goerrs.As(err, &errPtr) {
-				fmt.Println(" >> IS API ERROR (custom)")
 				if err.(*APIError).Type == errType {
 					return true
 				}
 			}
-			fmt.Println("  >> NOT an API ERROR (custom)")
 			return false
 		}
 }

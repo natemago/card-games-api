@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"gorm.io/driver/postgres"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"toggl.com/services/card-games-api/config"
 	deck_repo "toggl.com/services/card-games-api/repositories/deck"
@@ -14,11 +15,26 @@ var MigrationHandlers = []func(db *gorm.DB) error{
 }
 
 func OpenDatabase(config *config.DBConfig) (db *gorm.DB, err error) {
-	db, err = gorm.Open(postgres.Open(config.URL), &gorm.Config{})
+	dialect, err := configureDialect(config)
+	if err != nil {
+		return nil, err
+	}
+	db, err = gorm.Open(dialect, &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}
 	return db, nil
+}
+
+func configureDialect(config *config.DBConfig) (gorm.Dialector, error) {
+	switch config.Dialect {
+	case "postgres":
+		return postgres.Open(config.URL), nil
+	case "sqlite":
+		return sqlite.Open(config.URL), nil
+	default:
+		return nil, fmt.Errorf("unsupported DB type: %s", config.Dialect)
+	}
 }
 
 func AutoMigrateModels(db *gorm.DB) error {
