@@ -1,10 +1,9 @@
-package rest
+package errors
 
 import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/natemago/card-games-api/errors"
 )
 
 type ErrorResponse struct {
@@ -22,9 +21,9 @@ func ErrorHandler() gin.HandlerFunc {
 
 		statusCode := http.StatusInternalServerError
 
-		if errors.IsBadRequestError(err.Err) || errors.IsValidationError(err.Err) {
+		if IsBadRequestError(err.Err) || IsValidationError(err.Err) {
 			statusCode = http.StatusBadRequest
-		} else if errors.IsNotFoundError(err.Err) {
+		} else if IsNotFoundError(err.Err) {
 			statusCode = http.StatusNotFound
 		}
 

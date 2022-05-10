@@ -34,7 +34,7 @@ func (d *DeckService) CreateDeck(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, &CreateDeckResponse{
+	ctx.JSON(http.StatusCreated, &CreateDeckResponse{
 		DeckID:    deck.ID,
 		Shuffled:  deck.Shuffled,
 		Remaining: deck.Remaining,

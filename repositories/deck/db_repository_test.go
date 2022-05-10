@@ -63,7 +63,7 @@ func TestCreateDeck_FullDeck(t *testing.T) {
 
 	result, err := deckRepo.CreateDeck(&Deck{})
 	if err != nil {
-		t.Errorf("Expected to create a new full deck, but got error: %s", err.Error())
+		t.Fatalf("Expected to create a new full deck, but got error: %s", err.Error())
 	}
 	if result.Shuffled {
 		t.Errorf("Expected the deck to not be shuffled.")
@@ -82,7 +82,7 @@ func TestCreateDeck_FullDeck(t *testing.T) {
 		Shuffled: true,
 	})
 	if err != nil {
-		t.Errorf("Expected to create a new full deck, but got error: %s", err.Error())
+		t.Fatalf("Expected to create a new full deck, but got error: %s", err.Error())
 	}
 	if !result.Shuffled {
 		t.Errorf("Expected the deck to be shuffled.")
@@ -118,7 +118,7 @@ func TestCreateDeck_PartialDeck(t *testing.T) {
 		},
 	})
 	if err != nil {
-		t.Errorf("Expected to create a partial deck, but got error instead: %s", err.Error())
+		t.Fatalf("Expected to create a partial deck, but got error instead: %s", err.Error())
 	}
 	if result.Shuffled {
 		t.Errorf("Expected the deck to not be shuffled.")
@@ -142,7 +142,7 @@ func TestCreateDeck_PartialDeck(t *testing.T) {
 		Cards:    append([]*Card{}, suppliedCards...),
 	})
 	if err != nil {
-		t.Errorf("Expected to create a partial deck, but got error instead: %s", err.Error())
+		t.Fatalf("Expected to create a partial deck, but got error instead: %s", err.Error())
 	}
 	if !result.Shuffled {
 		t.Errorf("Expected the deck to be shuffled.")
@@ -178,7 +178,7 @@ func TestCreateDeck_InvaidCards(t *testing.T) {
 		},
 	})
 	if err == nil {
-		t.Error("Expected to get validation error.")
+		t.Fatalf("Expected to get validation error.")
 	}
 	if !errors.IsValidationError(err) {
 		t.Error("Expected the actual error to be ValidationError.")
@@ -193,7 +193,7 @@ func TestGetDeck(t *testing.T) {
 
 	result, err := deckRepo.GetDeck(td.FullDeckID)
 	if err != nil {
-		t.Errorf("Expected to get the full deck of cards, but got error instead: %s", err.Error())
+		t.Fatalf("Expected to get the full deck of cards, but got error instead: %s", err.Error())
 	}
 	if len(result.Cards) != 52 {
 		t.Error("Expected to get the full deck.")
@@ -201,7 +201,7 @@ func TestGetDeck(t *testing.T) {
 
 	result, err = deckRepo.GetDeck(td.PartialDeckID)
 	if err != nil {
-		t.Errorf("Expected to get the partial deck of cards, but got error instead: %s", err.Error())
+		t.Fatalf("Expected to get the partial deck of cards, but got error instead: %s", err.Error())
 	}
 	if len(result.Cards) != 3 {
 		t.Error("Expected to get the partial deck.")
@@ -231,7 +231,7 @@ func TestDrawCards(t *testing.T) {
 
 	result, err := deckRepo.DrawCards(td.FullDeckID, 1)
 	if err != nil {
-		t.Errorf("Expected to draw 1 card, but got an error instead: %s", err.Error())
+		t.Fatalf("Expected to draw 1 card, but got an error instead: %s", err.Error())
 	}
 	if len(result) != 1 {
 		t.Fatalf("Expected to draw exactly 1 card, but actually drawn: %d", len(result))
@@ -250,7 +250,7 @@ func TestDrawCards(t *testing.T) {
 
 	result, err = deckRepo.DrawCards(td.FullDeckID, 10)
 	if err != nil {
-		t.Errorf("Expected to draw 1 card, but got an error instead: %s", err.Error())
+		t.Fatalf("Expected to draw 1 card, but got an error instead: %s", err.Error())
 	}
 	if len(result) != 10 {
 		t.Errorf("Expected to draw exactly 10 cards, but actually drawn: %d", len(result))

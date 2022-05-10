@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/natemago/card-games-api/config"
+	"github.com/natemago/card-games-api/errors"
 	deck_api "github.com/natemago/card-games-api/rest/deck"
 )
 
@@ -16,7 +17,7 @@ func SetupRouting(router *gin.Engine, deckService deck_api.DeckService) {
 func SetupAPI(conf *config.APIConfig) *gin.Engine {
 	router := gin.Default()
 
-	router.Use(ErrorHandler())
+	router.Use(errors.ErrorHandler())
 
 	return router
 }
