@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: "postgres:14"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: toggl_user
+      POSTGRES_PASSWORD: toggl_password
+      POSTGRES_DB: toggl_card_games
+  
+  card-games-api:
+    build: .
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    environment:
+      TEST: "echo"
+    command: ["./card-games-api", "--db-url", "host=postgres user=toggl_user password=toggl_password dbname=toggl_card_games port=5432"]
