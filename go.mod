@@ -1,4 +1,4 @@
-module toggl.com/services/card-games-api
+module github.com/natemago/card-games-api
 
 go 1.18
 

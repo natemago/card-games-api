@@ -1,11 +1,11 @@
 package app
 
 import (
-	"toggl.com/services/card-games-api/config"
-	"toggl.com/services/card-games-api/repositories"
-	deck_repo "toggl.com/services/card-games-api/repositories/deck"
-	"toggl.com/services/card-games-api/rest"
-	deck_svcs "toggl.com/services/card-games-api/rest/deck"
+	"github.com/natemago/card-games-api/config"
+	"github.com/natemago/card-games-api/repositories"
+	deck_repo "github.com/natemago/card-games-api/repositories/deck"
+	"github.com/natemago/card-games-api/rest"
+	deck_svcs "github.com/natemago/card-games-api/rest/deck"
 )
 
 func RunApp(conf *config.Config) error {

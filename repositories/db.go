@@ -3,11 +3,11 @@ package repositories
 import (
 	"fmt"
 
+	"github.com/natemago/card-games-api/config"
+	deck_repo "github.com/natemago/card-games-api/repositories/deck"
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"toggl.com/services/card-games-api/config"
-	deck_repo "toggl.com/services/card-games-api/repositories/deck"
 )
 
 var MigrationHandlers = []func(db *gorm.DB) error{

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"toggl.com/services/card-games-api/errors"
+	"github.com/natemago/card-games-api/errors"
 )
 
 var Ranks = []string{"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"}

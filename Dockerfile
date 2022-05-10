@@ -1,6 +1,6 @@
 FROM golang:1.18-alpine AS builder
 RUN apk update && apk add git build-base
-WORKDIR /go/src/toggl.com/services/card-games-api
+WORKDIR /go/src/github.com/natemago/card-games-api
 
 ADD app ./app
 ADD cmd ./cmd
@@ -21,7 +21,7 @@ EXPOSE 8080
 
 WORKDIR /root
 
-COPY --from=builder /go/src/toggl.com/services/card-games-api/card-games-api ./card-games-api
+COPY --from=builder /go/src/github.com/natemago/card-games-api/card-games-api ./card-games-api
 RUN chmod +x ./card-games-api
 
 CMD ["./card-games-api"]

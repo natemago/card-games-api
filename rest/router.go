@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
-	"toggl.com/services/card-games-api/config"
-	deck_api "toggl.com/services/card-games-api/rest/deck"
+	"github.com/natemago/card-games-api/config"
+	deck_api "github.com/natemago/card-games-api/rest/deck"
 )
 
 func SetupRouting(router *gin.Engine, deckService deck_api.DeckService) {

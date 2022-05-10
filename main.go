@@ -4,7 +4,7 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 */
 package main
 
-import "toggl.com/services/card-games-api/cmd"
+import "github.com/natemago/card-games-api/cmd"
 
 func main() {
 	cmd.Execute()

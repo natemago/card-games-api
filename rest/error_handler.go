@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"toggl.com/services/card-games-api/errors"
+	"github.com/natemago/card-games-api/errors"
 )
 
 type ErrorResponse struct {

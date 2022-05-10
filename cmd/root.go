@@ -8,9 +8,9 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/natemago/card-games-api/app"
+	"github.com/natemago/card-games-api/config"
 	"github.com/spf13/cobra"
-	"toggl.com/services/card-games-api/app"
-	"toggl.com/services/card-games-api/config"
 )
 
 // rootCmd represents the base command when called without any subcommands

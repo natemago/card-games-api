@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	deck_repo "toggl.com/services/card-games-api/repositories/deck"
+	deck_repo "github.com/natemago/card-games-api/repositories/deck"
 )
 
 type DeckService struct {

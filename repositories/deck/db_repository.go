@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 
-	api_errors "toggl.com/services/card-games-api/errors"
+	api_errors "github.com/natemago/card-games-api/errors"
 )
 
 type DBDeckRepository struct {
@@ -55,7 +55,7 @@ func (d *DBDeckRepository) CreateDeck(deck *Deck) (*Deck, error) {
 func (d *DBDeckRepository) GetDeck(deckID string) (*Deck, error) {
 	deck := &Deck{}
 
-	result := d.db.First(deck).Where("id=?", deckID)
+	result := d.db.Where("id=?", deckID).First(deck)
 
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
@@ -78,33 +78,39 @@ func (d *DBDeckRepository) GetDeck(deckID string) (*Deck, error) {
 }
 
 func (d *DBDeckRepository) DrawCards(deckID string, numCards int) ([]*Card, error) {
-	deck, err := d.GetDeck(deckID)
-	if err != nil {
-		return nil, err
-	}
-
-	if numCards < 1 {
-		numCards = 1
-	}
-
-	if numCards > len(deck.Cards) {
-		return nil, api_errors.BadRequestError("not enough cards in deck", nil)
-	}
-
-	drawn := deck.Cards[0:numCards]
-	for _, card := range drawn {
-		card.Drawn = true
-		result := d.db.Save(card)
-		if result.Error != nil {
-			return nil, result.Error
+	var drawn []*Card
+	if err := d.db.Transaction(func(tx *gorm.DB) error {
+		deck, err := d.GetDeck(deckID)
+		if err != nil {
+			return err
 		}
-	}
 
-	deck.Remaining -= numCards
+		if numCards < 1 {
+			numCards = 1
+		}
 
-	result := d.db.Save(deck)
-	if result.Error != nil {
-		return nil, result.Error
+		if numCards > len(deck.Cards) {
+			return api_errors.BadRequestError("not enough cards in deck", nil)
+		}
+
+		drawn = deck.Cards[0:numCards]
+		for _, card := range drawn {
+			card.Drawn = true
+			result := d.db.Save(card)
+			if result.Error != nil {
+				return result.Error
+			}
+		}
+
+		deck.Remaining -= numCards
+
+		result := d.db.Save(deck)
+		if result.Error != nil {
+			return result.Error
+		}
+		return nil
+	}); err != nil {
+		return nil, err
 	}
 
 	return drawn, nil
