@@ -16,12 +16,17 @@ type DeckService struct {
 
 func (d *DeckService) CreateDeck(ctx *gin.Context) {
 	cardsParam, _ := ctx.GetQuery("cards")
-	_, shuffled := ctx.GetQuery("shuffled")
+	shuffledParam, _ := ctx.GetQuery("shuffled")
 
 	var cards []*deck_repo.Card
+	shuffled := false
 
 	if cardsParam != "" {
 		cards = deck_repo.AsCards(cardsParam)
+	}
+
+	if shuffledParam != "" {
+		shuffled, _ = strconv.ParseBool(strings.TrimSpace(shuffledParam))
 	}
 
 	deck, err := d.Repository.CreateDeck(&deck_repo.Deck{
