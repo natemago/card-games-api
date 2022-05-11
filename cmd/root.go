@@ -36,7 +36,7 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.Flags().StringVar(&Config.DBConfig.URL, "db-url", "", "URL to PostgreSQL database.")
+	rootCmd.Flags().StringVar(&Config.DBConfig.URL, "db-url", "", "URL to sqlite database or PostgreSQL DSN.")
 	rootCmd.Flags().StringVar(&Config.DBConfig.Dialect, "db-type", "postgres", "Database type: postgres or sqlite.")
 	rootCmd.Flags().StringVar(&Config.APIConfig.Host, "bind-host", "", "Bind to hostname.")
 	rootCmd.Flags().IntVar(&Config.APIConfig.Port, "bind-port", 8080, "Listen on port.")

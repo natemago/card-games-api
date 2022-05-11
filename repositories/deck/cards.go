@@ -9,9 +9,13 @@ import (
 	"github.com/natemago/card-games-api/errors"
 )
 
+// Ranks is a list of all card ranks (A - K), not including Joker card.
 var Ranks = []string{"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"}
+
+// Suits is a list of card suits.
 var Suits = []string{"C", "D", "H", "S"}
 
+// RankNames is a mapping between the rank code and the rank name.
 var RanksNames = map[string]string{
 	"A":  "ACE",
 	"2":  "2",
@@ -27,6 +31,8 @@ var RanksNames = map[string]string{
 	"Q":  "QUEEN",
 	"K":  "KING",
 }
+
+// SuitsNames is a mapping between the suit code (short 1 letter) to the actual name.
 var SuitsNames = map[string]string{
 	"C": "CLUBS",
 	"D": "DIAMONDS",
@@ -38,6 +44,7 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
+// NewFullDeck returns a new full deck of 52 cards, sorted in order.
 func NewFullDeck() []string {
 	deck := []string{}
 
@@ -50,6 +57,7 @@ func NewFullDeck() []string {
 	return deck
 }
 
+// ShuffleDeck shuffles a deck of cards. The deck does not have to be full.
 func ShuffleDeck(deck []*Card) {
 	rand.Shuffle(len(deck), func(i, j int) {
 		t := deck[i]
@@ -61,12 +69,20 @@ func ShuffleDeck(deck []*Card) {
 	}
 }
 
+// ValidateDeckCards validates if the cards are actually valid cards and there are no duplicates in the deck.
 func ValidateDeckCards(cards []*Card) error {
 	var invalidCards []string
+	seen := map[string]bool{}
 	for _, card := range cards {
 		if card.RankName() == "" || card.SuitName() == "" {
 			invalidCards = append(invalidCards, card.Value)
+			continue
 		}
+		if _, ok := seen[card.Value]; ok {
+			// duplicate
+			invalidCards = append(invalidCards, card.Value)
+		}
+		seen[card.Value] = true
 	}
 
 	if len(invalidCards) > 0 {
@@ -76,6 +92,9 @@ func ValidateDeckCards(cards []*Card) error {
 	return nil
 }
 
+// AsCards parses a string of comma separated values into a deck of cards.
+// Note that after parsing, some of the cards may hold invalid value or the deck might
+// have duplicate cards. See ValidateDeckCards to validate the deck.
 func AsCards(cardsStr string) []*Card {
 	var result []*Card
 

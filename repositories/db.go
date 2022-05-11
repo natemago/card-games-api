@@ -10,10 +10,12 @@ import (
 	"gorm.io/gorm"
 )
 
+// MigrationHandlers is a list of functions that perform a database migrations for multiple models.
 var MigrationHandlers = []func(db *gorm.DB) error{
 	deck_repo.AutoMigrateDeckModels,
 }
 
+// OpenDatabase creates a new connection to the database based on the supplied database configuration config.DBConfig.
 func OpenDatabase(config *config.DBConfig) (db *gorm.DB, err error) {
 	dialect, err := configureDialect(config)
 	if err != nil {
@@ -37,6 +39,7 @@ func configureDialect(config *config.DBConfig) (gorm.Dialector, error) {
 	}
 }
 
+// AutoMigrateModels executes the MigrationHandlers within a single transaction to auto-migrate the database models.
 func AutoMigrateModels(db *gorm.DB) error {
 	tx := db.Begin()
 

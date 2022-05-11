@@ -8,6 +8,7 @@ import (
 	deck_svcs "github.com/natemago/card-games-api/rest/deck"
 )
 
+// RunApp sets up and runs the API application.
 func RunApp(conf *config.Config) error {
 	// Build and connect to database
 	db, err := repositories.OpenDatabase(&conf.DBConfig)
@@ -23,7 +24,7 @@ func RunApp(conf *config.Config) error {
 	// Build the repositories
 	deckRepository := deck_repo.NewDBDeckRepository(db)
 
-	// Buld the services
+	// Build the services
 	deckService := deck_svcs.NewDeckService(deckRepository)
 
 	// Finally run the API

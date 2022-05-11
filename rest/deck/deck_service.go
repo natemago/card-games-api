@@ -10,10 +10,19 @@ import (
 	deck_repo "github.com/natemago/card-games-api/repositories/deck"
 )
 
+// DeckService represents the REST API service for the Deck resource.
+// Uses the DeckRepository to actually manage the deck of cards.
 type DeckService struct {
 	Repository deck_repo.DeckRepository
 }
 
+// CreateDeck endpoint for creating new deck given.
+// Accepts two query parameters:
+//  - shuffled - (optional) whether to create a shuffled deck or a deck with the cards in proper order.
+//  - cards - (optional) an optional list of cards given in a comma-separated string. When supplied, the
+//      deck will contain only the given cards (partial deck).
+// If none of the query parameters are supplied, then a full 52 deck of cards in proper order will be created.
+// If the cards list contain any invalid or duplicated values, returns a 400 Bad Request error response.
 func (d *DeckService) CreateDeck(ctx *gin.Context) {
 	cardsParam, _ := ctx.GetQuery("cards")
 	shuffledParam, _ := ctx.GetQuery("shuffled")
@@ -46,6 +55,10 @@ func (d *DeckService) CreateDeck(ctx *gin.Context) {
 	})
 }
 
+// OpenDeck looks up a deck by its id, and returns the deck data.
+// Accepts one path parameter: deckId - the ID of the deck to look up.
+// If the deck does not exist, generates a 404 error response.
+// Returns the deck metadata and the list of cards remaining in the deck.
 func (d *DeckService) OpenDeck(ctx *gin.Context) {
 	deckID := ctx.Param("deckId")
 	if deckID == "" {
@@ -77,6 +90,14 @@ func (d *DeckService) OpenDeck(ctx *gin.Context) {
 	})
 }
 
+// DrawCards draws a number of cards from a given deck.
+// Accepts two parameters:
+//  - deckId - a path parameter. The ID of the deck to draw cards from.
+//  - count - query parameter, integer. The number of cards to draw from the deck.
+// Returns a list of the drawn cards.
+// If there is no deck with the given id, then returns a 404 not found error response.
+// If the count paramters is not an integer or is greater then the number of remaining cards,
+// then returns a 400 Bad Request error response.
 func (d *DeckService) DrawCards(ctx *gin.Context) {
 	deckID := ctx.Param("deckId")
 	if deckID == "" {
@@ -124,6 +145,7 @@ func (d *DeckService) DrawCards(ctx *gin.Context) {
 	})
 }
 
+// NewDeckService creates a new pointer to a DeckService using the given DeckRepository.
 func NewDeckService(deckRepository deck_repo.DeckRepository) *DeckService {
 	return &DeckService{
 		Repository: deckRepository,
