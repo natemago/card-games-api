@@ -13,6 +13,23 @@ Currently implements a service to manage a deck of playing cards - standard 52 c
 * Provided `Dockerfile` with multistage build for containerization.
 * Example deployment with `docker-compose`.
 
+
+# Contents
+* [Card Games API](#card-games-api)
+* [Building and running](#building-and-running)
+   * [Build and run locally with go](#build-and-run-locally-with-go)
+   * [Build and run with docker](#build-and-run-with-docker)
+   * [Build and run with docker-compose](#build-and-run-with-docker-compose)
+* [Configuration](#configuration)
+   * [ENV variables](#env-variables)
+   * [Start parameters](#start-parameters)
+* [Endpoints](#endpoints)
+   * [Deck Service](#deck-service)
+      * [CreateDeck](#createdeck)
+      * [OpenDeck](#opendeck)
+      * [DrawCards](#drawcards)
+
+
 # Building and running
  
 ## Build and run locally with `go`
